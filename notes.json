@@ -1,9 +1,22 @@
 [
-    {
-        "id": 1,
-        "title": "Notes 1",
-        "content": "Note Content 1",
-        "createdAt": "2024-01-01T00:00:00.000Z",
-        "updatedAt": "2024-01-01T00:00:00.000Z"
-    }
+  {
+    "id": 1,
+    "title": "Notes 1",
+    "content": "Note Content 1"
+  },
+  {
+    "id": 2,
+    "title": "Notes 2",
+    "content": "Note Content 2"
+  },
+  {
+    "id": "3",
+    "title": "Note 3",
+    "content": "Note Content 3"
+  },
+  {
+    "id": "4",
+    "title": "Note 4",
+    "content": "Note Content 4"
+  }
 ]
