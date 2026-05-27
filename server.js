@@ -137,6 +137,36 @@ app.put('/notes/:id', (req, res) => {
     })
 })
 
+app.delete('/notes/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+
+    fs.readFile('notes.json', 'utf8', (err, data) => {
+        if (err) {
+            console.log("Error reading JSON file: ", err);
+            return;
+        }
+
+        const notes = JSON.parse(data);
+
+        const note = notes.find(n => n.id === id);
+
+        if (!note) {
+            console.log("Note not found.");
+            return;
+        }
+
+        const updNotes = notes.filter(note => note.id !== id);
+
+        fs.writeFile('notes.json', JSON.stringify(updNotes, null, 2), (err) => {
+            if (err) {
+                console.log("Error deleting note: ", err);
+            }
+
+            res.json({ "message": "Note deleted successfully" });
+        })
+    })
+})
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
