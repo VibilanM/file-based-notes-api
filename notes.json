@@ -10,12 +10,12 @@
     "content": "Note Content 2"
   },
   {
-    "id": "3",
+    "id": 3,
     "title": "Note 3",
     "content": "Note Content 3"
   },
   {
-    "id": "4",
+    "id": 4,
     "title": "Note 4",
     "content": "Note Content 4"
   },

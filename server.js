@@ -31,6 +31,33 @@ app.get('/notes', (req, res) => {
 
 });
 
+app.get('/notes/:id', (req, res) => {
+    const id = parseInt(req.params.id);
+
+    fs.readFile("notes.json", "utf8", (err, data) => {
+
+        if (err) {
+            console.log("Error reading json file: ", err);
+            return;
+        }
+
+        try {
+            const notes = JSON.parse(data)
+
+            const note = notes.find(n => n.id === id);
+
+            if (!note) {
+                console.log("Note not found.");
+            }
+
+            res.json(note);
+        }
+        catch (err) {
+            console.log("INVALID JSON: ", err);
+        }
+    });
+})
+
 app.post('/notes', (req, res) => {
     const { title, content } = req.body;
 
