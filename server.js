@@ -32,7 +32,7 @@ app.get('/notes', (req, res) => {
 });
 
 app.post('/notes', (req, res) => {
-    const newNote = req.body;
+    const { title, content } = req.body;
 
     fs.readFile('notes.json', 'utf8', (err, data) => {
         if (err) {
@@ -40,6 +40,22 @@ app.post('/notes', (req, res) => {
         }
 
         const notes = JSON.parse(data);
+
+        const newNote = {
+            id: notes.length + 1,
+            title,
+            content
+        }
+
+        if (!title || !content) {
+            console.log("Title and content are required.");
+            return;
+        }
+
+        if (typeof title !== 'string' || typeof content !== 'string') {
+            console.log("Title and content must be strings.");
+            return;
+        }
 
         notes.push(newNote);
 
