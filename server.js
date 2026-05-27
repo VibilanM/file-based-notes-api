@@ -96,6 +96,47 @@ app.post('/notes', (req, res) => {
     })
 })
 
+app.put('/notes/:id', (req, res) => {
+    const { title, content } = req.body;
+    const id = parseInt(req.params.id);
+
+    fs.readFile('notes.json', 'utf8', (err, data) => {
+        if (err) {
+            console.log("Error reading JSON file: ", err);
+        }
+
+        const notes = JSON.parse(data);
+
+        const note = notes.find(n => n.id === id);
+
+        note.title = title;
+        note.content = content;
+
+        if (!note) {
+            console.log("Note not found.");
+            return;
+        }
+
+        if (!title || !content) {
+            console.log("Title and content are required.");
+            return;
+        }
+
+        if (typeof title !== 'string' || typeof content !== 'string') {
+            console.log("Title and content must be strings.");
+            return;
+        }
+
+        fs.writeFile('notes.json', JSON.stringify(notes, null, 2), (err) => {
+            if (err) {
+                console.log("Error writing into JSON file: ", err);
+            }
+
+            res.send("Note added successfully.");
+        })
+    })
+})
+
 app.listen(port, () => {
     console.log(`Server running on http://localhost:${port}`);
 });
