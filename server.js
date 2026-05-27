@@ -17,7 +17,10 @@ app.get('/notes', (req, res) => {
 
         if (err) {
             console.log("Error reading json file: ", err);
-            return;
+
+            return res.status(500).json({
+                message: "Could not read notes file."
+            });
         }
 
         try {
@@ -26,6 +29,9 @@ app.get('/notes', (req, res) => {
         }
         catch (err) {
             console.log("INVALID JSON: ", err);
+            return res.status(500).json({
+                message: "Could not read notes file."
+            });
         }
     });
 
@@ -38,7 +44,9 @@ app.get('/notes/:id', (req, res) => {
 
         if (err) {
             console.log("Error reading json file: ", err);
-            return;
+            return res.status(500).json({
+                message: "Could not read notes file."
+            });
         }
 
         try {
@@ -48,12 +56,18 @@ app.get('/notes/:id', (req, res) => {
 
             if (!note) {
                 console.log("Note not found.");
+                return res.status(500).json({
+                    message: "Note not found."
+                });
             }
 
             res.json(note);
         }
         catch (err) {
             console.log("INVALID JSON: ", err);
+            return res.status(500).json({
+                message: "Invalid notes file."
+            });
         }
     });
 })
@@ -64,6 +78,9 @@ app.post('/notes', (req, res) => {
     fs.readFile('notes.json', 'utf8', (err, data) => {
         if (err) {
             console.log("Error reading JSON file: ", err);
+            return res.status(500).json({
+                message: "Could not read notes file."
+            });
         }
 
         const notes = JSON.parse(data);
@@ -76,11 +93,16 @@ app.post('/notes', (req, res) => {
 
         if (!title || !content) {
             console.log("Title and content are required.");
-            return;
+            return res.status(500).json({
+                message: "Title and content are required."
+            });
         }
 
         if (typeof title !== 'string' || typeof content !== 'string') {
             console.log("Title and content must be strings.");
+            return res.status(500).json({
+                message: "Title and content must be strings."
+            });
             return;
         }
 
@@ -89,6 +111,9 @@ app.post('/notes', (req, res) => {
         fs.writeFile('notes.json', JSON.stringify(notes, null, 2), (err) => {
             if (err) {
                 console.log("Error writing into JSON file: ", err);
+                return res.status(500).json({
+                    message: "Could not write notes file."
+                });
             }
 
             res.send("Note added successfully.");
@@ -103,6 +128,9 @@ app.put('/notes/:id', (req, res) => {
     fs.readFile('notes.json', 'utf8', (err, data) => {
         if (err) {
             console.log("Error reading JSON file: ", err);
+            return res.status(500).json({
+                message: "Could not read notes file."
+            });
         }
 
         const notes = JSON.parse(data);
@@ -114,22 +142,31 @@ app.put('/notes/:id', (req, res) => {
 
         if (!note) {
             console.log("Note not found.");
-            return;
+            return res.status(500).json({
+                message: "Note not found."
+            });
         }
 
         if (!title || !content) {
             console.log("Title and content are required.");
-            return;
+            return res.status(500).json({
+                message: "Title and content are required."
+            });
         }
 
         if (typeof title !== 'string' || typeof content !== 'string') {
             console.log("Title and content must be strings.");
-            return;
+            return res.status(500).json({
+                message: "Title and content must be strings."
+            });
         }
 
         fs.writeFile('notes.json', JSON.stringify(notes, null, 2), (err) => {
             if (err) {
                 console.log("Error writing into JSON file: ", err);
+                return res.status(500).json({
+                    message: "Could not read notes file."
+                });
             }
 
             res.send("Note added successfully.");
@@ -143,7 +180,9 @@ app.delete('/notes/:id', (req, res) => {
     fs.readFile('notes.json', 'utf8', (err, data) => {
         if (err) {
             console.log("Error reading JSON file: ", err);
-            return;
+            return res.status(500).json({
+                message: "Could not read notes file."
+            });
         }
 
         const notes = JSON.parse(data);
@@ -152,7 +191,9 @@ app.delete('/notes/:id', (req, res) => {
 
         if (!note) {
             console.log("Note not found.");
-            return;
+            return res.status(500).json({
+                message: "Note not found."
+            });
         }
 
         const updNotes = notes.filter(note => note.id !== id);
@@ -160,6 +201,9 @@ app.delete('/notes/:id', (req, res) => {
         fs.writeFile('notes.json', JSON.stringify(updNotes, null, 2), (err) => {
             if (err) {
                 console.log("Error deleting note: ", err);
+                return res.status(500).json({
+                    message: "Error deleting note."
+                });
             }
 
             res.json({ "message": "Note deleted successfully" });
