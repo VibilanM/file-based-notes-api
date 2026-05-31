@@ -53,8 +53,16 @@ router.post('/', (req, res) => {
             return res.status(500).json({ message: "Could not read JSON file." });
         }
 
+        let id = notes.length + 1;
+
+        const idExists = notes.find(n => n.id === id);
+
+        if (idExists) {
+            id++;
+        }
+
         const note = {
-            id: notes.length + 1,
+            id,
             title,
             content
         };
